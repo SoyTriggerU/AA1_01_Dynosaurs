@@ -12,10 +12,10 @@ struct Dynosaur
     int attackPower;
 };
 
-int getDynosaurTypeToString(DynosaurType dynosaur, std::string dynosaurName)
+std::string getDynosaurTypeToString(DynosaurType* dynosaur, std::string& dynosaurName)
 {
-     
-}
+    if (dynosaur == nullptr)
+        return dynosaurName = "INVALID";
 
     switch (*dynosaur)
     {
