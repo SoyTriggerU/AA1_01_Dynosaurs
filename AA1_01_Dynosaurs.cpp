@@ -2,7 +2,7 @@
 
 #define NUM_DYNOSAURS 2
 
-enum class DynosaurType { TYRANNOSAURUS, VELOCIRAPTOR, BRACHIOSAURUS, DIPLODOCUS };
+enum DynosaurType { TYRANNOSAURUS, VELOCIRAPTOR, BRACHIOSAURUS, DIPLODOCUS };
 
 struct Dynosaur
 {
@@ -12,10 +12,10 @@ struct Dynosaur
     int attackPower;
 };
 
-std::string getDynosaurTypeToString(DynosaurType* dynosaur, std::string &dynosaurName)
+int getDynosaurTypeToString(DynosaurType dynosaur, std::string dynosaurName)
 {
-    if (dynosaur == nullptr)
-        return dynosaurName = "INVALID";
+     
+}
 
     switch (*dynosaur)
     {
