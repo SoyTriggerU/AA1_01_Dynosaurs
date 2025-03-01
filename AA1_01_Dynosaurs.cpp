@@ -51,7 +51,7 @@ int main()
     for (int i = 0; i < NUM_DYNOSAURS; ++i)
     {
         getDynosaurTypeToString(&dynosaurs[i].dynosaur, dynosaurs[i].dynosaurName);
-		std::cout << "Dynosaur " << i + 1 << " is a " << dynosaurs[i].dynosaurName << std::endl;
+        std::cout << "Dynosaur " << i + 1 << " is a " << dynosaurs[i].dynosaurName << std::endl;
     }
 
 }
