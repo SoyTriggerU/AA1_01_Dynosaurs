@@ -1,95 +1,34 @@
+#include "Dynosaur.h"  
 #include <iostream>
 #include <time.h>
 
-#define MAX_DYNOSAURS 15
-
-enum class DynosaurType { TYRANNOSAURUS, VELOCIRAPTOR, BRACHIOSAURUS, DIPLODOCUS };
-
-struct Dynosaur
-{
-    DynosaurType dynosaur;
-    std::string dynosaurName;
-    int health = 100;
-    int attackPower;
-    int strength;
-};
-
-std::string getDynosaurTypeToString(DynosaurType dynosaur)
-{
-    switch (dynosaur)
-    {
-    case DynosaurType::TYRANNOSAURUS:
-        return "TYRANNOSAURUS";
-    case DynosaurType::VELOCIRAPTOR:
-        return "VELOCIRAPTOR";
-    case DynosaurType::BRACHIOSAURUS:
-        return "BRACHIOSAURUS";
-    case DynosaurType::DIPLODOCUS:
-        return "DIPLODOCUS";
-    default:
-        return "INVALID";
-    }
-}
-
-Dynosaur* createRandomDynosaur()
-{
-    Dynosaur* dyno = new Dynosaur;
-    int dynoType = rand() % 4;
-
-    dyno->dynosaur = static_cast<DynosaurType>(dynoType);
-    dyno->dynosaurName = getDynosaurTypeToString(dyno->dynosaur);
-
-    switch (dyno->dynosaur)
-    {
-    case DynosaurType::TYRANNOSAURUS:
-        dyno->attackPower = 100;
-        break;
-    case DynosaurType::VELOCIRAPTOR:
-        dyno->attackPower = 80;
-        break;
-    case DynosaurType::BRACHIOSAURUS:
-        dyno->attackPower = 65;
-        break;
-    case DynosaurType::DIPLODOCUS:
-        dyno->attackPower = 45;
-        break;
-    default:
-        dyno->attackPower = 0;
-        break;
-    }
-
-    dyno->strength = dyno->health + dyno->attackPower;
-
-    return dyno;
-}
-
-bool compareDynosaurStrength(const Dynosaur* d1, const Dynosaur* d2)
-{
-    return d1->strength == d2->strength;
-}
+#define MAX_DYNOSAURS 15    // Max number of dynos
 
 int main()
 {
-    srand(time(NULL));
-    
-    Dynosaur* jurassicPark[MAX_DYNOSAURS] = { nullptr };
+    srand(time(NULL));  //Inicializes random num generator
 
-    for (int i = 0; i < MAX_DYNOSAURS; i+=2)
+    Dynosaur* jurassicPark[MAX_DYNOSAURS] = { nullptr };    //Dyno array
+
+    // Create dyno odd positions making sure they don't repeat every 2 positions
+    for (int i = 0; i < MAX_DYNOSAURS; i += 2)
     {
         Dynosaur* newDyno = nullptr;
 
+        // Generate different dynos randomly (Every 2 postions)
         do
         {
             if (newDyno != nullptr)
             {
-                delete newDyno;
+                delete newDyno;    // Avoid memory leaks
             }
-            newDyno = createRandomDynosaur();
+            newDyno = createRandomDynosaur(); // Create random dyno
         } while (i >= 2 && compareDynosaurStrength(newDyno, jurassicPark[i - 2]));
 
-        jurassicPark[i] = newDyno;
+        jurassicPark[i] = newDyno;  // Assign dyno to array
     }
-    
+
+    // Show created dyno and empty positions
     for (int i = 0; i < MAX_DYNOSAURS; ++i)
     {
         if (jurassicPark[i] != nullptr)
@@ -103,10 +42,11 @@ int main()
         }
     }
 
+    // Empty reserved memory
     for (int i = 0; i < MAX_DYNOSAURS; ++i)
     {
         delete jurassicPark[i];
     }
 
-    return 0;
+    return 0;   // End of program
 }
