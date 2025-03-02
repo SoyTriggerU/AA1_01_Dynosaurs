@@ -1,7 +1,7 @@
 #include <iostream>
 #include <time.h>
 
-#define NUM_DYNOSAURS 2
+#define MAX_DYNOSAURS 15
 
 enum DynosaurType { TYRANNOSAURUS, VELOCIRAPTOR, BRACHIOSAURUS, DIPLODOCUS };
 
@@ -13,44 +13,6 @@ struct Dynosaur
     int attackPower;
     int strength;
 };
-
-Dynosaur createRandomDynosaur()
-{
-    Dynosaur dyno;
-    int dynoType = rand() % 4;
-
-    dyno.dynosaur = static_cast<DynosaurType>(dynoType);
-
-    switch (dyno.dynosaur)
-    {
-    case TYRANNOSAURUS:
-        dyno.dynosaurName = "TYRANNOSAURUS";
-        dyno.attackPower = 100;
-        DynosaurType::TYRANNOSAURUS;
-        break;
-    case VELOCIRAPTOR:
-        dyno.dynosaurName = "VELOCIRAPTOR";
-        dyno.attackPower = 80;
-        DynosaurType::VELOCIRAPTOR;
-        break;
-    case BRACHIOSAURUS:
-        dyno.dynosaurName = "BRACHIOSAURUS";
-        dyno.attackPower = 65;
-        DynosaurType::BRACHIOSAURUS;
-        break;
-    case DIPLODOCUS:
-        dyno.dynosaurName = "DIPLODOCUS";
-        dyno.attackPower = 45;
-        DynosaurType::DIPLODOCUS;
-        break;
-    default:
-        dyno.dynosaurName = "INVALID";
-        dyno.attackPower = 0;
-        break;
-    }
-
-    return dyno;
-}
 
 std::string getDynosaurTypeToString(DynosaurType dynosaur)
 {
@@ -69,40 +31,86 @@ std::string getDynosaurTypeToString(DynosaurType dynosaur)
     }
 }
 
-bool compareDynosaurStrength(const Dynosaur& d1, const Dynosaur& d2)
+Dynosaur* createRandomDynosaur()
 {
-    int strength1 = d1.health + d1.attackPower;
-    int strength2 = d2.health + d2.attackPower;
+    Dynosaur* dyno = new Dynosaur;
+    int dynoType = rand() % 4;
 
-    return strength1 == strength2;
+    dyno->dynosaur = static_cast<DynosaurType>(dynoType);
+    dyno->dynosaurName = getDynosaurTypeToString(dyno->dynosaur);
+
+    switch (dyno->dynosaur)
+    {
+    case TYRANNOSAURUS:
+        dyno->attackPower = 100;
+        DynosaurType::TYRANNOSAURUS;
+        break;
+    case VELOCIRAPTOR:
+        dyno->attackPower = 80;
+        DynosaurType::VELOCIRAPTOR;
+        break;
+    case BRACHIOSAURUS:
+        dyno->attackPower = 65;
+        DynosaurType::BRACHIOSAURUS;
+        break;
+    case DIPLODOCUS:
+        dyno->attackPower = 45;
+        DynosaurType::DIPLODOCUS;
+        break;
+    default:
+        dyno->attackPower = 0;
+        break;
+    }
+
+    dyno->strength = dyno->health + dyno->attackPower;
+
+    return dyno;
+}
+
+bool compareDynosaurStrength(const Dynosaur* d1, const Dynosaur* d2)
+{
+    return d1->strength == d2->strength;
 }
 
 int main()
 {
     srand(time(NULL));
-    Dynosaur dynosaurs[NUM_DYNOSAURS];
+    
+    Dynosaur* jurassicPark[MAX_DYNOSAURS];
 
-    for (int i = 0; i < NUM_DYNOSAURS; ++i)
+    for (int i = 0; i < MAX_DYNOSAURS; ++i)
     {
-        dynosaurs[i] = createRandomDynosaur();
-        std::cout << "Dynosaur " << i + 1 << " is a " << dynosaurs[i].dynosaurName
-            << " with Attack Power: " << dynosaurs[i].attackPower << std::endl;
+        Dynosaur* newDyno = nullptr;
+
+        do
+        {
+            if (newDyno != nullptr)
+            {
+                delete newDyno;
+            }
+            newDyno = createRandomDynosaur();
+        } while (i >= 2 && compareDynosaurStrength(newDyno, jurassicPark[i - 2]));
+
+        jurassicPark[i] = newDyno;
     }
     
-    for (int i = 0; i < NUM_DYNOSAURS; ++i)
+    for (int i = 0; i < MAX_DYNOSAURS; ++i)
     {
-        for (int j = i + 1; j < NUM_DYNOSAURS; ++j)
+        if (jurassicPark[i] != nullptr)
         {
-            if (compareDynosaurStrength(dynosaurs[i], dynosaurs[j]))
-            {
-                std::cout << "Dynosaur " << i + 1 << " and Dynosaur " << j + 1 << " have the same strength!" << std::endl;
-            }
-            else
-            {
-                std::cout << "Dynosaur " << i + 1 << " and Dynosaur " << j + 1 << " have different strengths!" << std::endl;
-            }
+            std::cout << "Position " << i << ": " << jurassicPark[i]->dynosaurName
+                << " (Strength: " << jurassicPark[i]->strength << ")" << std::endl;
+        }
+        else
+        {
+            std::cout << "Position " << i << ": There's no dynosaur" << std::endl;
         }
     }
-   
+
+    for (int i = 0; i < MAX_DYNOSAURS; ++i)
+    {
+        delete jurassicPark[i];
+    }
+
     return 0;
 }
