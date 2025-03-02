@@ -3,7 +3,7 @@
 
 #define MAX_DYNOSAURS 15
 
-enum DynosaurType { TYRANNOSAURUS, VELOCIRAPTOR, BRACHIOSAURUS, DIPLODOCUS };
+enum class DynosaurType { TYRANNOSAURUS, VELOCIRAPTOR, BRACHIOSAURUS, DIPLODOCUS };
 
 struct Dynosaur
 {
@@ -18,13 +18,13 @@ std::string getDynosaurTypeToString(DynosaurType dynosaur)
 {
     switch (dynosaur)
     {
-    case TYRANNOSAURUS:
+    case DynosaurType::TYRANNOSAURUS:
         return "TYRANNOSAURUS";
-    case VELOCIRAPTOR:
+    case DynosaurType::VELOCIRAPTOR:
         return "VELOCIRAPTOR";
-    case BRACHIOSAURUS:
+    case DynosaurType::BRACHIOSAURUS:
         return "BRACHIOSAURUS";
-    case DIPLODOCUS:
+    case DynosaurType::DIPLODOCUS:
         return "DIPLODOCUS";
     default:
         return "INVALID";
@@ -41,21 +41,17 @@ Dynosaur* createRandomDynosaur()
 
     switch (dyno->dynosaur)
     {
-    case TYRANNOSAURUS:
+    case DynosaurType::TYRANNOSAURUS:
         dyno->attackPower = 100;
-        DynosaurType::TYRANNOSAURUS;
         break;
-    case VELOCIRAPTOR:
+    case DynosaurType::VELOCIRAPTOR:
         dyno->attackPower = 80;
-        DynosaurType::VELOCIRAPTOR;
         break;
-    case BRACHIOSAURUS:
+    case DynosaurType::BRACHIOSAURUS:
         dyno->attackPower = 65;
-        DynosaurType::BRACHIOSAURUS;
         break;
-    case DIPLODOCUS:
+    case DynosaurType::DIPLODOCUS:
         dyno->attackPower = 45;
-        DynosaurType::DIPLODOCUS;
         break;
     default:
         dyno->attackPower = 0;
@@ -76,9 +72,9 @@ int main()
 {
     srand(time(NULL));
     
-    Dynosaur* jurassicPark[MAX_DYNOSAURS];
+    Dynosaur* jurassicPark[MAX_DYNOSAURS] = { nullptr };
 
-    for (int i = 0; i < MAX_DYNOSAURS; ++i)
+    for (int i = 0; i < MAX_DYNOSAURS; i+=2)
     {
         Dynosaur* newDyno = nullptr;
 
@@ -103,7 +99,7 @@ int main()
         }
         else
         {
-            std::cout << "Position " << i << ": There's no dynosaur" << std::endl;
+            std::cout << "Position " << i << ": There's no dynosaur here" << std::endl;
         }
     }
 
